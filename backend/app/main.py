@@ -1,15 +1,19 @@
 import uvicorn
 from fastapi import FastAPI
 from .db_config import db
+from .model import task,project
+
+
 
 def init_app():
-    
+
     db.init()
     app = FastAPI()
 
     @app.on_event("startup")
     def startup():
-        db.create_all()
+        project.Base.metadata.create_all(bind=db.engine)
+        task.Base.metadata.create_all(bind=db.engine)
 
     @app.on_event("shutdown")
     def shutdown():
