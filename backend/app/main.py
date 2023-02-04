@@ -1,9 +1,11 @@
+import sys , os
+sys.path.insert(0,os.path.dirname(__file__)+'\\config')
+sys.path.insert(0,os.path.dirname(__file__)+'\\model')
 import uvicorn
 from fastapi import FastAPI
-from .db_config import db
-from .model import task,project
-
-
+from db_config import db,Base, init_model, reinit_model
+from config import config
+from .data.load_test import load_data
 
 def init_app():
 
@@ -12,9 +14,16 @@ def init_app():
 
     @app.on_event("startup")
     def startup():
-        project.Base.metadata.create_all(bind=db.engine)
-        task.Base.metadata.create_all(bind=db.engine)
-
+        if config['MODE'] == 'development':
+            try:
+                init_model()
+                load_data()
+            except Exception:
+                reinit_model()
+                load_data()
+        elif config['MODE'] == 'production':
+            init_model()
+            
     @app.on_event("shutdown")
     def shutdown():
         db.close()
@@ -23,6 +32,5 @@ def init_app():
 
 app = init_app()
 
-
 def start():
-    uvicorn.run("app.main:app", host="localhost",port=8000,reload = True)
+    uvicorn.run("app.main:app", host=config['HOST'],port=config['PORT'],reload = True)

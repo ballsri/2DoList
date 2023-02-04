@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
-from .config import config
+from config import config
 
-POSTGRES_URL = config['DB_URL']
+if config['MODE'] == 'development':
+    POSTGRES_URL = config['DB_DEV_URL']
+elif config['MODE'] == 'production':
+    POSTGRES_URL = config['DB_PROD_URL']
 
 class DatabaseSession:
 
@@ -14,7 +17,6 @@ class DatabaseSession:
         return getattr(self.session, name)
 
     def init(self):
-
         self.engine = create_engine(POSTGRES_URL)
         self.session = sessionmaker(autocommit = False, autoflush= False, bind= self.engine)()
 
@@ -28,4 +30,15 @@ def commit_rollback():
     except Exception:
         db.rollback()
         raise
+
+
+import task,project
+
+def init_model():
+    Base.metadata.create_all(db.engine)
+
+def reinit_model():
+    Base.metadata.drop_all(bind=db.engine)
+    init_model()
+
 
