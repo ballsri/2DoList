@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
-from config import config
+from app.config import config
+
+config = config.config
 
 if config['MODE'] == 'development':
     POSTGRES_URL = config['DB_DEV_URL']
@@ -30,9 +32,6 @@ def commit_rollback():
     except Exception:
         db.rollback()
         raise
-
-
-import task,project
 
 def init_model():
     Base.metadata.create_all(db.engine)

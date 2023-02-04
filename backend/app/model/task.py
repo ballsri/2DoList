@@ -1,10 +1,11 @@
-from pydantic import BaseModel, Field
-from db_config import db, Base
-from sqlalchemy import Table, Column,Boolean,ForeignKey, Integer,Text ,  String,Enum, DateTime
+from app.config import db_config 
+from sqlalchemy import Column,ForeignKey,Text ,  String,Enum, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
-from datetime import datetime
+
+
+db , Base = db_config.db, db_config.Base
 
 class ILevel(enum.Enum):
     HIGH = 3
