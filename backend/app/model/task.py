@@ -16,7 +16,7 @@ class Task(Base):
     title = Column(String(50), nullable=False)
     description = Column(Text, nullable=True)
     importantLevel = Column(Enum(ILevel), nullable=False)
-    createDate = Column(DateTime, default=datetime.utcnow)
+    createDate = Column(DateTime, default=datetime.utcnow())
     dueDate = Column(DateTime, nullable=False)
     projectId = Column(String(36), ForeignKey("projects.id"), nullable=False) 
     from_project = relationship('Project', back_populates="tasks")

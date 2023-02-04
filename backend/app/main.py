@@ -33,4 +33,4 @@ def init_app():
 app = init_app()
 
 def start():
-    uvicorn.run("app.main:app", host=config['HOST'],port=config['PORT'],reload = True)
+    uvicorn.run("app.main:app", host=config['HOST'],port= int(config['PORT']),reload = True)
