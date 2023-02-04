@@ -1,2 +1,3 @@
-drop database todolist;
-create database todolist;
+drop table tasks;
+drop table projects;
+
