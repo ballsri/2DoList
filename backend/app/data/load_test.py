@@ -14,7 +14,7 @@ async def load_proj():
     for proj_dict in project_data:
         proj_list.append(project.Project(id = proj_dict['id'], title = proj_dict['title'], description = proj_dict['description']))    
 
-    db.session.add_all(proj_list)
+    db.add_all(proj_list)
     await commit_rollback()
 
 async def load_task():
@@ -30,7 +30,7 @@ async def load_task():
             id = task_dict['id'], title = task_dict['title'], description = task_dict['description'], importantLevel = task.ILevel(task_dict['importantLevel']),
              createDate=datetime.strptime(task_dict['createDate'],date_format), dueDate = datetime.strptime(task_dict['dueDate'],date_format), projectId = task_dict['projectId']))    
 
-    db.session.add_all(task_list)
+    db.add_all(task_list)
     await commit_rollback()
 
 async def load_data():

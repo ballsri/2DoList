@@ -21,6 +21,8 @@ def init_app():
         elif config['MODE'] == 'production':
             await init_model()
             
+      
+            
     @app.on_event("shutdown")
     async def shutdown():
         await db.close()

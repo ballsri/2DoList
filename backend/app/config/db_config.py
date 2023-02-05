@@ -39,6 +39,7 @@ async def init_model():
 async def reinit_model():
     async with db.engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
-    await init_model()
+        await conn.run_sync(Base.metadata.create_all)
+
 
 
