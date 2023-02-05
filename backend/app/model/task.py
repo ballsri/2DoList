@@ -1,11 +1,8 @@
-from app.config import db_config 
+from app.config.db_config import db , Base
 from sqlalchemy import Column,ForeignKey,Text ,  String,Enum, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
-
-
-db , Base = db_config.db, db_config.Base
 
 class ILevel(enum.Enum):
     HIGH = 3

@@ -1,8 +1,6 @@
-from app.config import db_config 
+from app.config.db_config import db, commit_rollback
 from app.model import project,task
 import os, json
-
-db,Base, init_model, reinit_model, commit_rollback = db_config.db, db_config.Base, db_config.init_model, db_config.reinit_model, db_config.commit_rollback
 
 def load_proj():
     with open(os.path.join(os.path.dirname(__file__), "./project.json")) as f:

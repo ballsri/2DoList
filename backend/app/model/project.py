@@ -1,10 +1,7 @@
 
-from app.config import db_config 
+from app.config.db_config import db , Base
 from sqlalchemy import Column,String,Text
 from sqlalchemy.orm import relationship
-
-
-db , Base = db_config.db, db_config.Base
 
 class Project(Base):
     __tablename__ = 'projects'

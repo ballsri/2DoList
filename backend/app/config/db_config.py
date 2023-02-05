@@ -1,8 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
-from app.config import config
-
-config = config.config
+from app.config.config import config
 
 if config['MODE'] == 'development':
     POSTGRES_URL = config['DB_DEV_URL']

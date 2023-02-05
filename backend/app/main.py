@@ -1,17 +1,14 @@
 import uvicorn
 from fastapi import FastAPI
-from app.config import db_config 
-from app.config import config
-from .data.load_test import load_data
-
-db,Base, init_model, reinit_model = db_config.db, db_config.Base, db_config.init_model, db_config.reinit_model
-config = config.config
+from app.config.db_config import db,Base, init_model, reinit_model
+from app.config.config import config
+from app.data.load_test import load_data
 
 def init_app():
 
     db.init()
     app = FastAPI()
-    
+
     @app.on_event("startup")
     def startup():
         if config['MODE'] == 'development':
