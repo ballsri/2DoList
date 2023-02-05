@@ -4,6 +4,11 @@ from app.config.db_config import db, init_model, reinit_model
 from app.config.config import config
 from app.data.load_test import load_data
 
+import uuid
+from app.model.task import TaskLevel
+from app.schema.project import Project
+from app.service.task_service import Task_CRUD_Service
+from datetime import datetime
 
 def init_app():
 
@@ -22,7 +27,8 @@ def init_app():
         elif config['MODE'] == 'production':
             await init_model()
 
-
+    
+        
             
     @app.on_event("shutdown")
     async def shutdown():

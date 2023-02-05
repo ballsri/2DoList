@@ -6,6 +6,7 @@
         "importantLevel" : 3,
         "createDate" : "2023/02/04 23:02:33",
         "dueDate" : "2023/02/06 00:00:00",
+        "status" : 1,
         "projectId": "{5d1f7462-a4cd-11ed-b9df-0242ac120003}"
     },
     {
@@ -15,6 +16,7 @@
         "importantLevel" : 2,
         "createDate" : "2023/02/04 23:02:33",
         "dueDate" : "2023/02/07 00:00:00",
+        "status" : 1,
         "projectId": "{5d1f7462-a4cd-11ed-b9df-0242ac120003}"
     },
     {
@@ -24,6 +26,7 @@
         "importantLevel" : 1,
         "createDate" : "2023/02/04 23:02:33",
         "dueDate" : "2023/02/06 00:00:00",
+        "status" : 1,
         "projectId": "{5d1f7462-a4cd-11ed-b9df-0242ac120003}"
     },
 
@@ -34,6 +37,7 @@
         "importantLevel" : 3,
         "createDate" : "2023/02/04 23:02:33",
         "dueDate" : "2023/02/08 00:00:00",
+        "status" : 1,
         "projectId": "{977e4462-a4cd-11ed-b9df-0242ac120003}"
     },
    
@@ -44,6 +48,7 @@
         "importantLevel" : 2,
         "createDate" : "2023/02/04 23:02:33",
         "dueDate" : "2023/02/06 00:00:00",
+        "status" : 1,
         "projectId": "{977e4462-a4cd-11ed-b9df-0242ac120003}"
     },
     {
@@ -53,6 +58,7 @@
         "importantLevel" : 1,
         "createDate" : "2023/02/04 23:02:33",
         "dueDate" : "2023/02/09 00:00:00",
+        "status" : 1,
         "projectId": "{977e4462-a4cd-11ed-b9df-0242ac120003}"
     }
 

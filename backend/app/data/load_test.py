@@ -1,8 +1,8 @@
 from app.config.db_config import db, commit_rollback
 from app.model import project,task
+from datetime import datetime
 import uuid
 import os, json
-from datetime import datetime
 date_format = '%Y/%m/%d %H:%M:%S'
 
 async def load_proj():
@@ -30,8 +30,10 @@ async def load_task():
         print(task_dict['id'])
 
         task_list.append(task.Task(
-            id = uuid.UUID(task_dict['id']), title = task_dict['title'], description = task_dict['description'], importantLevel = task.ILevel(task_dict['importantLevel']),
-            createDate=datetime.strptime(task_dict['createDate'],date_format), dueDate = datetime.strptime(task_dict['dueDate'],date_format), projectId = uuid.UUID(task_dict['projectId'])))    
+            id = uuid.UUID(task_dict['id']), title = task_dict['title'],
+             description = task_dict['description'], importantLevel = task.TaskLevel(task_dict['importantLevel']),
+            createDate=datetime.strptime(task_dict['createDate'],date_format), dueDate = datetime.strptime(task_dict['dueDate'],date_format),
+            status = task.TaskStatus(task_dict['status']), projectId = uuid.UUID(task_dict['projectId'])))    
 
     db.add_all(task_list)
     await commit_rollback()
