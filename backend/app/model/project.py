@@ -1,11 +1,16 @@
-
 from app.config.db_config import db , Base
-from sqlalchemy import Column,String,Text
+from sqlalchemy import Column,String,Text, UUID
+from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
+
 
 class Project(Base):
     __tablename__ = 'projects'
-    id = Column(String(36), primary_key=True)
+    id = Column(UUID, primary_key=True, server_default=func.gen_random_uuid(), index=True)
     title = Column(String(50),nullable=False)
     description = Column(Text, nullable=True)
     tasks = relationship('Task', back_populates="from_project")
+
+
+
+ 

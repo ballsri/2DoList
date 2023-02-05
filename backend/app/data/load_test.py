@@ -1,6 +1,6 @@
 from app.config.db_config import db, commit_rollback
 from app.model import project,task
-from sqlalchemy import select
+import uuid
 import os, json
 from datetime import datetime
 date_format = '%Y/%m/%d %H:%M:%S'
@@ -13,7 +13,7 @@ async def load_proj():
     proj_list = []
 
     for proj_dict in project_data:
-        proj_list.append(project.Project(id = proj_dict['id'], title = proj_dict['title'], description = proj_dict['description']))    
+        proj_list.append(project.Project(id = uuid.UUID(proj_dict['id']), title = proj_dict['title'], description = proj_dict['description']))    
 
     db.add_all(proj_list)
     await commit_rollback()
@@ -27,9 +27,11 @@ async def load_task():
 
     
     for task_dict in task_data:
+        print(task_dict['id'])
+
         task_list.append(task.Task(
-            id = task_dict['id'], title = task_dict['title'], description = task_dict['description'], importantLevel = task.ILevel(task_dict['importantLevel']),
-             createDate=datetime.strptime(task_dict['createDate'],date_format), dueDate = datetime.strptime(task_dict['dueDate'],date_format), projectId = task_dict['projectId']))    
+            id = uuid.UUID(task_dict['id']), title = task_dict['title'], description = task_dict['description'], importantLevel = task.ILevel(task_dict['importantLevel']),
+            createDate=datetime.strptime(task_dict['createDate'],date_format), dueDate = datetime.strptime(task_dict['dueDate'],date_format), projectId = uuid.UUID(task_dict['projectId'])))    
 
     db.add_all(task_list)
     await commit_rollback()

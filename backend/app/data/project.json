@@ -1,12 +1,12 @@
 [
     {
-        "id" : "5d1f7462-a4cd-11ed-b9df-0242ac120003",
+        "id" : "{5d1f7462-a4cd-11ed-b9df-0242ac120003}",
         "title" : "AAA",
         "description" : "aaaa"
     },
     
     {
-        "id" : "977e4462-a4cd-11ed-b9df-0242ac120003",
+        "id" : "{977e4462-a4cd-11ed-b9df-0242ac120003}",
         "title" : "BBB",
         "description" : "bbbb"
     }
