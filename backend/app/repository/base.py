@@ -3,7 +3,6 @@ from sqlalchemy import update, delete
 from sqlalchemy.future import select
 from app.config.db_config import db, commit_rollback
 
-# print(await ProjectRepository.create(id="x"*36,title="y"*5,description="x"*4))
 
 T = TypeVar('T')
 
@@ -40,4 +39,10 @@ class Base:
         query = delete(model).where(model.id == model_id)
         await db.execute(query)
         await commit_rollback()
+
+    @classmethod
+    async def get_by_title(cls,model_title:str):
+        model = cls.model
+        query = select(cls.model).where(model.title == model_title)
+        return (await db.execute(query)).scalars().all()
         

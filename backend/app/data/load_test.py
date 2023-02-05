@@ -3,6 +3,7 @@ from app.model import project,task
 from sqlalchemy import select
 import os, json
 from datetime import datetime
+date_format = '%Y/%m/%d %H:%M:%S'
 
 async def load_proj():
     with open(os.path.join(os.path.dirname(__file__), "./project.json")) as f:
@@ -24,7 +25,7 @@ async def load_task():
 
     task_list = []
 
-    date_format = '%Y/%m/%d %H:%M:%S'
+    
     for task_dict in task_data:
         task_list.append(task.Task(
             id = task_dict['id'], title = task_dict['title'], description = task_dict['description'], importantLevel = task.ILevel(task_dict['importantLevel']),
