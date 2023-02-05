@@ -7,8 +7,8 @@ from app.config.db_config import db
 
 T = TypeVar('T')
 
-class Base:
-    model: Generic[T]
+# class Base:
+#     model: Generic[T]
 
-    @classmethod
-    def create()
+#     @classmethod
+#     def create()

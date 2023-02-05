@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy import MetaData
 from sqlalchemy.orm import declarative_base, sessionmaker
 from app.config.config import config
 
@@ -7,7 +8,7 @@ if config['MODE'] == 'development':
 elif config['MODE'] == 'production':
     POSTGRES_URL = config['DB_PROD_URL']
 
-class DatabaseSession:
+class AsyncDatabaseSession:
 
     def __init__(self) -> None:
         self.session = None
@@ -17,25 +18,27 @@ class DatabaseSession:
         return getattr(self.session, name)
 
     def init(self):
-        self.engine = create_engine(POSTGRES_URL)
-        self.session = sessionmaker(autocommit = False, autoflush= False, bind= self.engine)()
+        self.engine = create_async_engine(POSTGRES_URL,future=True,echo=True)
+        self.session = sessionmaker(autocommit = False, autoflush= False, bind= self.engine, class_=AsyncSession)()
 
 
-db = DatabaseSession()
+db = AsyncDatabaseSession()
 Base = declarative_base()
 
-def commit_rollback():
+async def commit_rollback():
     try:
-        db.commit()
+        await db.commit()
     except Exception:
-        db.rollback()
+        await db.rollback()
         raise
 
-def init_model():
-    Base.metadata.create_all(db.engine)
+async def init_model():
+    async with db.engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
-def reinit_model():
-    Base.metadata.drop_all(bind=db.engine)
-    init_model()
+async def reinit_model():
+    async with db.engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+    await init_model()
 
 

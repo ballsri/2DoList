@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
 
+
 class ILevel(enum.Enum):
     HIGH = 3
     MEDIUM = 2
