@@ -7,7 +7,6 @@ from datetime import datetime
 from sqlalchemy.sql import func
 import uuid
 
-date_format = '%Y-%m-%d %H:%M:%S'
 
 class TaskRepository(Base):
     model = Task
@@ -15,6 +14,11 @@ class TaskRepository(Base):
     @staticmethod
     async def find_by_project_id(proj_id:uuid.UUID):
         query = select(Task).where(Task.projectId == proj_id)
+        return (await db.execute(query)).scalars().all() 
+
+    @staticmethod
+    async def find_by_project_task(proj_id:uuid.UUID,task_id:uuid.UUID):
+        query = select(Task).where(Task.projectId == proj_id, Task.id== task_id)
         return (await db.execute(query)).scalars().all() 
 
     @staticmethod
@@ -61,10 +65,3 @@ class TaskRepository(Base):
     async def count_by_progress():
         query = select(Task.status, func.count(Task.id)).group_by(Task.status)
         return (await db.execute(query)).all() 
-
-
-# TEST COMMAND
-    # print((await TaskRepository.order_by_closest_date(datetime(2023,2,7)))[0][0].id)            
-    # print((await TaskRepository.order_by_prior())[0][0].importantLevel)
-    # print((await TaskRepository.count_by_prior()))
-    #print( await TaskRepository.create(**Task(id=uuid.uuid4(),title="ASD",description="",importantLevel=ILevel(3),dueDate=datetime(2023,2,5), projectId= uuid.UUID("977e4462-a4cd-11ed-b9df-0242ac120003") ).dict()))

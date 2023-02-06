@@ -1,4 +1,4 @@
-from app.config.db_config import db , Base
+from app.config.db_config import Base
 from sqlalchemy import Column,String,Text, UUID
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship

@@ -14,7 +14,7 @@ class Project_CRUD_Service:
         #check duplication
         _title = await ProjectRepository.get_by_title(project.title)
         if _title:
-            raise HTTPException(status_code=400, detail="Project's name already exists")
+            raise HTTPException(status_code=400, detail={'status': "Bad request", 'message': "Invalid title, Project title's already exists"})
 
         #insert project into table
         _project_dict = project.dict()
@@ -28,7 +28,7 @@ class Project_CRUD_Service:
         #check if exists
         _id = await ProjectRepository.get_by_id(project_id)
         if not _id:
-            raise HTTPException(status_code=400, detail="Project's not exist")
+            raise HTTPException(status_code=400, detail={'status': "Bad request", 'message': "Invalid id, Project's not exists"})
         
         #update into table
         _project_dict = project.dict()
@@ -37,10 +37,11 @@ class Project_CRUD_Service:
 
     @staticmethod
     async def delete_service(project_id: uuid.UUID):
+
          #check if exists
         _id = await ProjectRepository.get_by_id(project_id)
         if not _id:
-            raise HTTPException(status_code=400, detail="Project's not exist")
+            raise HTTPException(status_code=400, detail={'status': "Bad request", 'message': "Invalid id, Project's not exists"})
         
         #delete from table
         await ProjectRepository.delete_by_id(project_id)

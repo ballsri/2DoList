@@ -3,12 +3,8 @@ from fastapi import FastAPI
 from app.config.db_config import db, init_model, reinit_model
 from app.config.config import config
 from app.data.load_test import load_data
+from app.controller import project, task
 
-import uuid
-from app.model.task import TaskLevel
-from app.schema.project import Project
-from app.service.task_service import Task_CRUD_Service
-from datetime import datetime
 
 def init_app():
 
@@ -18,22 +14,21 @@ def init_app():
     @app.on_event("startup")
     async def startup():
         if config['MODE'] == 'development':
-            try:
-                await init_model()
-                await load_data()
-            except Exception:
-                await reinit_model()
-                await load_data()
+            
+            await reinit_model()
+            await load_data()
+               
         elif config['MODE'] == 'production':
             await init_model()
 
-    
-        
-            
     @app.on_event("shutdown")
     async def shutdown():
         await db.close()
-    
+
+
+    app.include_router(project.router)
+    app.include_router(task.router)
+
     return app
 
 app = init_app()
