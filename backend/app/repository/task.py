@@ -12,9 +12,15 @@ class TaskRepository(Base):
     model = Task
 
     # many queries for possible future development
+
     @staticmethod
-    async def find_by_project_id(proj_id:uuid.UUID):
-        query = select(Task).where(Task.projectId == proj_id)
+    async def find_by_project_id(proj_id:uuid.UUID, task_level:int, task_status: int):
+        query_id = Task.projectId == proj_id
+        query_level = (Task.importantLevel == TaskLevel(task_level)) if task_level > 0 else query_id
+        query_status = (Task.status == TaskStatus(task_status)) if task_status > 0 else query_id
+
+
+        query = select(Task).where(query_id,query_level,query_status)
         return (await db.execute(query)).scalars().all() 
 
     @staticmethod
@@ -30,11 +36,6 @@ class TaskRepository(Base):
     @staticmethod
     async def find_by_level(task_level:int):
         query = select(Task).where(Task.importantLevel == TaskLevel(task_level))
-        return (await db.execute(query)).scalars().all()
-
-    @staticmethod
-    async def find_by_project_level(proj_id:uuid.UUID,task_level:int):
-        query = select(Task).where(Task.projectId == proj_id,Task.importantLevel == TaskLevel(task_level))
         return (await db.execute(query)).scalars().all()
 
     @staticmethod
@@ -72,10 +73,6 @@ class TaskRepository(Base):
         query = select(Task).where(Task.status == TaskLevel(task_status))
         return (await db.execute(query)).scalars().all()
 
-    @staticmethod
-    async def find_by_project_status(proj_id:uuid.UUID,task_status:int):
-        query = select(Task).where(Task.projectId==proj_id,Task.status == TaskLevel(task_status))
-        return (await db.execute(query)).scalars().all()
 
     @staticmethod
     async def select_project_order_by_prior(proj_id:uuid.UUID):

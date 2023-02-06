@@ -24,8 +24,9 @@ def enumChecker(req : inputTask):
 
 
 @router.get("/",response_model=ResponseSchema, response_model_exclude_none=True)
-async def task_get_all(project_id : str):
-    return ResponseSchema(detail="This is a task list page", result= (await TaskRepository.find_by_project_id(uuid.UUID(project_id))))
+async def task_get_all(project_id : str, level : int = 0, status: int = 0):
+
+    return ResponseSchema(detail="This is a task list page", result= (await TaskRepository.find_by_project_id(uuid.UUID(project_id), level, status)))
 
 @router.get("/{task_id}",response_model=ResponseSchema, response_model_exclude_none=True)
 async def task_get_one(project_id : str,task_id: str):
