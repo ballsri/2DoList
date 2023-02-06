@@ -11,9 +11,15 @@ import uuid
 class TaskRepository(Base):
     model = Task
 
+    # many queries for possible future development
     @staticmethod
     async def find_by_project_id(proj_id:uuid.UUID):
         query = select(Task).where(Task.projectId == proj_id)
+        return (await db.execute(query)).scalars().all() 
+
+    @staticmethod
+    async def find_by_task_id(task_id:uuid.UUID):
+        query = select(Task).where( Task.id== task_id)
         return (await db.execute(query)).scalars().all() 
 
     @staticmethod
@@ -22,39 +28,74 @@ class TaskRepository(Base):
         return (await db.execute(query)).scalars().all() 
 
     @staticmethod
-    async def find_by_level(proj_level:int):
-        query = select(Task).where(Task.importantLevel == TaskLevel(proj_level))
+    async def find_by_level(task_level:int):
+        query = select(Task).where(Task.importantLevel == TaskLevel(task_level))
         return (await db.execute(query)).scalars().all()
 
     @staticmethod
-    async def find_by_due_date(proj_date:datetime):
-        query = select(Task).where((func.date(Task.dueDate)) == proj_date.date() )
+    async def find_by_project_level(proj_id:uuid.UUID,task_level:int):
+        query = select(Task).where(Task.projectId == proj_id,Task.importantLevel == TaskLevel(task_level))
+        return (await db.execute(query)).scalars().all()
+
+    @staticmethod
+    async def find_by_due_date(task_date:datetime):
+        query = select(Task).where((func.date(Task.dueDate)) == task_date.date() )
         return (await db.execute(query)).scalars().all() 
 
     @staticmethod
-    async def find_by_create_date(proj_date:datetime):
-        query = select(Task).where((func.date(Task.createDate)) == proj_date.date() )
+    async def find_by_project_due_date(proj_id:uuid.UUID, task_date:datetime):
+        query = select(Task).where(Task.projectId==proj_id,(func.date(Task.dueDate)) == task_date.date() )
         return (await db.execute(query)).scalars().all() 
 
     @staticmethod
-    async def order_by_closest_date(proj_date:datetime):
-        query = select(Task).where(Task.dueDate >= proj_date).order_by(Task.createDate.asc())
+    async def find_by_create_date(task_date:datetime):
+        query = select(Task).where((func.date(Task.createDate)) == task_date.date() )
+        return (await db.execute(query)).scalars().all()
+    
+    @staticmethod
+    async def find_by_project_create_date(proj_id:uuid.UUID,task_date:datetime):
+        query = select(Task).where(Task.projectId==proj_id,(func.date(Task.createDate)) == task_date.date() )
+        return (await db.execute(query)).scalars().all()  
+
+    @staticmethod
+    async def order_by_closest_date(task_date:datetime):
+        query = select(Task).where(Task.dueDate >= task_date).order_by(Task.createDate.asc())
         return (await db.execute(query)).all()
 
     @staticmethod
-    async def find_by_status(proj_status:int):
-        query = select(Task).where(Task.status == TaskLevel(proj_status))
+    async def select_project_order_by_closest_date(proj_id:uuid.UUID,task_date:datetime):
+        query = select(Task).where(Task.projectId==proj_id,Task.dueDate >= task_date).order_by(Task.createDate.asc())
+        return (await db.execute(query)).all()
+
+    @staticmethod
+    async def find_by_status(task_status:int):
+        query = select(Task).where(Task.status == TaskLevel(task_status))
         return (await db.execute(query)).scalars().all()
+
+    @staticmethod
+    async def find_by_project_status(proj_id:uuid.UUID,task_status:int):
+        query = select(Task).where(Task.projectId==proj_id,Task.status == TaskLevel(task_status))
+        return (await db.execute(query)).scalars().all()
+
+    @staticmethod
+    async def select_project_order_by_prior(proj_id:uuid.UUID):
+        query = select(Task).where(Task.projectId == proj_id).order_by(Task.importantLevel.asc())
+        return (await db.execute(query)).all()   
 
     @staticmethod
     async def order_by_prior():
         query = select(Task).order_by(Task.importantLevel.asc())
-        return (await db.execute(query)).all()     
+        return (await db.execute(query)).all()    
     
     @staticmethod
     async def count_by_prior():
         query = select(Task.importantLevel, func.count(Task.id)).group_by(Task.importantLevel)
         return (await db.execute(query)).all() 
+
+    @staticmethod
+    async def select_project_order_by_progress(proj_id:uuid.UUID):
+        query = select(Task).where(Task.projectId == proj_id).order_by(Task.status.asc())
+        return (await db.execute(query)).all()
 
     @staticmethod
     async def order_by_progress():

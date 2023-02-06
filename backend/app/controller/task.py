@@ -9,7 +9,7 @@ from datetime import datetime
 import uuid
 date_format='%Y/%m/%d %H:%M:%S'
 
-# router for Tasks, CRUD plus some query api
+# router for Tasks, more CRUD api
 router = APIRouter(prefix='/{project_id}/task', tags=['Task API'])
 
 # Raise exeption for invalid enum
@@ -20,6 +20,8 @@ def enumChecker(req : inputTask):
         raise HTTPException(status_code= 400,detail ={'status': "Bad request", 'message': "Invalid importantLevel, importantLevel must be enum"} )
     if  _status < 1 or _status > 3:
         raise HTTPException(status_code= 400,detail ={'status': "Bad request", 'message': "Invalid status, status must be enum"} )
+
+
 
 @router.get("/",response_model=ResponseSchema, response_model_exclude_none=True)
 async def task_get_all(project_id : str):
@@ -49,3 +51,4 @@ async def task_update(task_id : str,req: inputTask):
 async def task_delete(task_id : str):
     await ts.delete_service(uuid.UUID(task_id))
     return ResponseSchema(detail="task has been delete")
+
