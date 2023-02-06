@@ -25,7 +25,6 @@ def init_app():
     async def shutdown():
         await db.close()
 
-
     app.include_router(project.router)
     app.include_router(task.router)
 

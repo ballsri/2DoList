@@ -1,12 +1,7 @@
 from fastapi import APIRouter
-from fastapi.exceptions import HTTPException
 from app.schema.util import ResponseSchema
-from app.schema.task import inputTask ,Task 
-from app.model.task import TaskLevel, TaskStatus
-from app.repository.task import TaskRepository
+from app.schema.task import inputTask 
 from app.service.task_service import Task_CRUD_Service as ts
-from datetime import datetime
-import uuid
 
 
 # router for Tasks, more CRUD api

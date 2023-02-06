@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
 
-
 class TaskLevel(enum.Enum):
     HIGH = 3
     MEDIUM = 2
