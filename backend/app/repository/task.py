@@ -16,8 +16,8 @@ class TaskRepository(Base):
     @staticmethod
     async def find_by_project_id(proj_id:uuid.UUID, task_level:int, task_status: int):
         query_id = Task.projectId == proj_id
-        query_level = (Task.importantLevel == TaskLevel(task_level)) if task_level > 0 else query_id
-        query_status = (Task.status == TaskStatus(task_status)) if task_status > 0 else query_id
+        query_level = (Task.importantLevel == TaskLevel(task_level)) if 4 > task_level > 0 else query_id
+        query_status = (Task.status == TaskStatus(task_status)) if 4> task_status > 0 else query_id
 
 
         query = select(Task).where(query_id,query_level,query_status)
